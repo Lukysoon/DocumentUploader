@@ -40,6 +40,7 @@ namespace DocumentUploader.DocumentService.Controllers
             if (!_documentService.Exists(documentId)) return StatusCode(404);
 
             _documentService.Remove(documentId);
+            _tagService.RemoveUnusedTags(documentId);
 
             return StatusCode(200);
         }

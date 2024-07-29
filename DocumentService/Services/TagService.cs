@@ -20,6 +20,14 @@ public class TagService : ITagService
         CreateTags(missingTags);
     }
 
+    public void RemoveUnusedTags(Guid documentId)
+    {
+        List<Tag> tags = _tagRepository.GetTagsForDocument(documentId);
+        List<Tag> unusedTags = tags.Where(t => !t.documents.Any()).ToList();
+
+        _tagRepository.RemoveTags(unusedTags);
+    }
+
     private void CreateTags(IEnumerable<Tag> tags)
     {
         _tagRepository.CreateTags(tags);
