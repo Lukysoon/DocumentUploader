@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.Design;
+using DocumentUploader.DocumentService.Data;
+using DocumentUploader.DocumentService.Entities;
 
-namespace DocumentService;
+namespace DocumentUploader.DocumentService.Repositories;
 
 public class TagRepository : ITagRepository
 {

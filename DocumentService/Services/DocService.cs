@@ -1,4 +1,8 @@
-﻿namespace DocumentService;
+﻿using DocumentUploader.DocumentService.Data;
+using DocumentUploader.DocumentService.Entities;
+using DocumentUploader.DocumentService.Repositories;
+
+namespace DocumentUploader.DocumentService.Services;
 
 public class DocService : IDocService
 {

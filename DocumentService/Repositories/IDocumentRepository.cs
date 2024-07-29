@@ -1,4 +1,6 @@
-﻿ namespace DocumentService;
+﻿using DocumentUploader.DocumentService.Entities;
+
+namespace DocumentUploader.DocumentService.Repositories;
 
 public interface IDocumentRepository
 {

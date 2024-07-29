@@ -1,9 +1,10 @@
-﻿namespace DocumentService;
+﻿using DocumentUploader.DocumentService.Entities;
 using Microsoft.EntityFrameworkCore;
 
+namespace DocumentUploader.DocumentService.Data;
 public class ApplicationDbContext : DbContext
 {
-     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
         }

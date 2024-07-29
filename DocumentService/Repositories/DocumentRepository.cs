@@ -1,5 +1,7 @@
-﻿
-namespace DocumentService;
+﻿using DocumentUploader.DocumentService.Data;
+using DocumentUploader.DocumentService.Entities;
+
+namespace DocumentUploader.DocumentService.Repositories;
 
 public class DocumentRepository : IDocumentRepository
 {

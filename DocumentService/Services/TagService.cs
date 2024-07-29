@@ -1,6 +1,8 @@
-﻿
+﻿using DocumentUploader.DocumentService.Data;
+using DocumentUploader.DocumentService.Entities;
+using DocumentUploader.DocumentService.Repositories;
 
-namespace DocumentService;
+namespace DocumentUploader.DocumentService.Services;
 
 public class TagService : ITagService
 {

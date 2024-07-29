@@ -1,5 +1,6 @@
-﻿
-namespace DocumentService;
+﻿using DocumentUploader.DocumentService.Entities;
+
+namespace DocumentUploader.DocumentService.Services;
 
 public interface IDocService
 {

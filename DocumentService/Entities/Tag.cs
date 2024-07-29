@@ -1,4 +1,4 @@
-﻿namespace DocumentService;
+﻿namespace DocumentUploader.DocumentService.Entities;
 
 public class Tag
 {
