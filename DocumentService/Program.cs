@@ -1,5 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers().AddXmlSerializerFormatters();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

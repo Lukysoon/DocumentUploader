@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentUploader.DocumentService.Controllers 
 {
+    [ApiController]
     [Route("document")]
     public class DocumentController : Controller
     {
@@ -30,6 +31,8 @@ namespace DocumentUploader.DocumentService.Controllers
             return StatusCode(200);
         }
 
+        [HttpDelete]
+        [Route("delete")]
         public IActionResult RemoveDocument(Guid documentId)
         {
             if (!ModelState.IsValid) return StatusCode(400);
