@@ -11,8 +11,6 @@ public class ApplicationDbContext : DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.UseCollation("Czech_CI_AS");
-
             modelBuilder.ApplyConfigurationsFromAssembly(
                 assembly: typeof(ApplicationDbContext).Assembly
             );
