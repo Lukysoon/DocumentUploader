@@ -34,4 +34,10 @@ public class TagRepository : ITagRepository
     {
         _context.Tags.RemoveRange(unusedTags);
     }
+
+    public List<Tag> GetTags(IEnumerable<string> tagNames)
+    {
+        List<Tag> tags = _context.Tags.Where(t => tagNames.Contains(t.Name)).ToList();
+        return tags;
+    }
 }

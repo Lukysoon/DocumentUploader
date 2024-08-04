@@ -4,6 +4,6 @@ namespace DocumentUploader.DocumentService.Services;
 
 public interface ITagService
 {
-    void CreateMissingTags(IEnumerable<Tag> tags);
+    void CreateMissingTags(IEnumerable<string> tags);
     void RemoveUnusedTags(Guid documentId);
 }

@@ -19,7 +19,7 @@ namespace DocumentUploader.DocumentService.Controllers
 
         [HttpPost]
         [Route("upload")]
-        public IActionResult UploadDocument(Document document)
+        public IActionResult UploadDocument(DocumentDto document)
         {
             if (!ModelState.IsValid) return StatusCode(400);
 

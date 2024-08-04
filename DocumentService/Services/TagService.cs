@@ -14,8 +14,9 @@ public class TagService : ITagService
         _tagRepository = tagRepository;
     }
 
-    public void CreateMissingTags(IEnumerable<Tag> tags)
+    public void CreateMissingTags(IEnumerable<string> tagNames)
     {
+        List<Tag> tags = _tagRepository.GetTags(tagNames);
         List<Tag> missingTags = GetMissingTags(tags);
         CreateTags(missingTags);
     }
