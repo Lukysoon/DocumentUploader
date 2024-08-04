@@ -16,7 +16,7 @@ public class TagService : ITagService
 
     public void CreateMissingTags(IEnumerable<Tag> tags)
     {
-        List<Tag> missingTags = GetTagsWhichNotExistsInDb(tags);
+        List<Tag> missingTags = GetMissingTags(tags);
         CreateTags(missingTags);
     }
 
@@ -33,7 +33,7 @@ public class TagService : ITagService
         _tagRepository.CreateTags(tags);
     }
 
-    private List<Tag> GetTagsWhichNotExistsInDb(IEnumerable<Tag> tags)
+    private List<Tag> GetMissingTags(IEnumerable<Tag> tags)
     {
         HashSet<Tag> existingTags = _context.Tags.Where(t => tags.Contains(t)).Select(t => t).ToHashSet();
         List<Tag> missingTags = tags.Where(t => !existingTags.Contains(t)).ToList();
