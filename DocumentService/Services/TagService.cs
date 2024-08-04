@@ -23,7 +23,7 @@ public class TagService : ITagService
     public void RemoveUnusedTags(Guid documentId)
     {
         List<Tag> tags = _tagRepository.GetTagsForDocument(documentId);
-        List<Tag> unusedTags = tags.Where(t => !t.documents.Any()).ToList();
+        List<Tag> unusedTags = tags.Where(t => !t.Documents.Any()).ToList();
 
         _tagRepository.RemoveTags(unusedTags);
     }
