@@ -14,7 +14,9 @@ public class DocumentRepository : IDocumentRepository
 
     public void Remove(Guid documentId)
     {
-        throw new NotImplementedException();
+        Document? document = _context.Documents.FirstOrDefault(d => d.Id == documentId);
+        if (document != null)
+            _context.Documents.Remove(document);
     }
 
     public void UploadDocument(Document document)
@@ -24,6 +26,7 @@ public class DocumentRepository : IDocumentRepository
 
     public bool Exists(Guid documentId)
     {
-        throw new NotImplementedException();
+        bool exists = _context.Documents.Any();
+        return exists;
     }
 }
