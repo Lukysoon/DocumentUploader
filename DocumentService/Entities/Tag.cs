@@ -6,5 +6,5 @@ public class Tag
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
-    public List<DocumentTag> DocumentTags { get; set; } = new List<DocumentTag>();
+    public List<Document> Documents { get; set; } = new List<Document>();
 }

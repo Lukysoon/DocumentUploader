@@ -11,6 +11,10 @@ namespace DocumentService
             builder.Property(d => d.Id).HasDefaultValueSql("NEWID()").IsRequired();
             builder.Property(d => d.FileName);
             builder.Property(d => d.DataInBase64);
+
+            builder
+                .HasMany(d => d.Tags)
+                .WithMany(t => t.Documents);
         }
     }
 }
