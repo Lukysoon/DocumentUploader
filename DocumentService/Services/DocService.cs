@@ -1,4 +1,5 @@
-﻿using DocumentUploader.DocumentService.Data;
+﻿using DocumentService;
+using DocumentUploader.DocumentService.Data;
 using DocumentUploader.DocumentService.Entities;
 using DocumentUploader.DocumentService.Repositories;
 
@@ -25,12 +26,13 @@ public class DocService : IDocService
         _documentRepository.Remove(documentId);
     }
 
-    public void Upload(Document document)
+    public void Upload(DocumentDto document)
     {
+
         _documentRepository.UploadDocument(document);
     }
 
-    public bool IsValid(Document document)
+    public bool IsValid(DocumentDto document)
     {
         bool isValid = !IsBase64String(document.DataInBase64);
         return isValid;
@@ -40,5 +42,18 @@ public class DocService : IDocService
     {
         Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
         return Convert.TryFromBase64String(base64, buffer , out int bytesParsed);
+    }
+
+    private Document ParseDocument(DocumentDto documentDto)
+    {
+        List<Tag> tags = ParseTags(documentDto.Tags);
+        Document document = new Document(documentDto.FileName, documentDto.DataInBase64, tags);
+        return document;
+    }
+
+    private List<Tag> ParseTags(IEnumerable<string> tagNames)
+    {
+        List<Tag> tags = tagNames.Select(t => new Tag(t)).ToList();
+        return tags;
     }
 }
