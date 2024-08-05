@@ -57,7 +57,7 @@ public class DocService : IDocService
         IEnumerable<DocumentDto> documentDtos = documents.ToList().Select(d => 
         {
             IEnumerable<string> tagNames = d.Tags.Select(t => t.Name);
-            return new DocumentDto(d.FileName, d.DataInBase64, tagNames);
+            return new DocumentDto(d.FileName, d.DataInBase64, tagNames.ToList());
         });
 
         return documentDtos;
@@ -65,8 +65,10 @@ public class DocService : IDocService
 
     private Document ParseDocument(DocumentDto documentDto)
     {
-        IEnumerable<Tag> tags = documentDto.Tags.Select(t => new Tag(t));
-        Document document = new Document(documentDto.FileName, documentDto.DataInBase64, tags);
+        List<Tag> tags = documentDto.Tags.Select(t => new Tag(t)).ToList();
+        Document document = new Document(documentDto.FileName, documentDto.DataInBase64);
+        document.Tags = tags;
+
         return document;
     }
 }
