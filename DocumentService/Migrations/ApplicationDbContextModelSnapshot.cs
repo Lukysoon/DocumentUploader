@@ -34,7 +34,7 @@ namespace DocumentService.Migrations
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("DocumentTag");
+                    b.ToTable("DocumentTag", (string)null);
                 });
 
             modelBuilder.Entity("DocumentUploader.DocumentService.Entities.Document", b =>
@@ -54,7 +54,7 @@ namespace DocumentService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("DocumentUploader.DocumentService.Entities.Tag", b =>
@@ -70,7 +70,7 @@ namespace DocumentService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("DocumentTag", b =>
