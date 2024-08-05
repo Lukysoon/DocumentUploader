@@ -7,4 +7,9 @@ public class Tag
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
     public List<Document> Documents { get; set; } = new List<Document>();
+
+    public Tag(string name)
+    {
+        Name = name;
+    }
 }
