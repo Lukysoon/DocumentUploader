@@ -7,6 +7,7 @@ public interface IDocService
 {
     bool Exists(Guid documentId);
     void Remove(Guid documentId);
-    void Upload(Document document);
-    bool IsValid(DocumentDto document);
+    void Upload(DocumentDto document);
+    bool IsDtoValid(DocumentDto document);
+    IEnumerable<DocumentDto> GetDocuments(IEnumerable<string> tags);
 }

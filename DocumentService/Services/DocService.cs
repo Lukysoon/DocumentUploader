@@ -26,13 +26,13 @@ public class DocService : IDocService
         _documentRepository.Remove(documentId);
     }
 
-    public void Upload(DocumentDto document)
+    public void Upload(DocumentDto documentDto)
     {
-
+        Document document = ParseDocument(documentDto);
         _documentRepository.UploadDocument(document);
     }
 
-    public bool IsValid(DocumentDto document)
+    public bool IsDtoValid(DocumentDto document)
     {
         bool isValid = !IsBase64String(document.DataInBase64);
         return isValid;
@@ -44,16 +44,29 @@ public class DocService : IDocService
         return Convert.TryFromBase64String(base64, buffer , out int bytesParsed);
     }
 
-    private Document ParseDocument(DocumentDto documentDto)
+    public IEnumerable<DocumentDto> GetDocuments(IEnumerable<string> tags)
     {
-        List<Tag> tags = ParseTags(documentDto.Tags);
-        Document document = new Document(documentDto.FileName, documentDto.DataInBase64, tags);
-        return document;
+        IEnumerable<Document> documents = _documentRepository.GetDocuments(tags);
+        IEnumerable<DocumentDto> documentDtos = ParseDocuments(documents);
+
+        return documentDtos;
     }
 
-    private List<Tag> ParseTags(IEnumerable<string> tagNames)
+    private IEnumerable<DocumentDto> ParseDocuments(IEnumerable<Document> documents)
     {
-        List<Tag> tags = tagNames.Select(t => new Tag(t)).ToList();
-        return tags;
+        IEnumerable<DocumentDto> documentDtos = documents.ToList().Select(d => 
+        {
+            IEnumerable<string> tagNames = d.Tags.Select(t => t.Name);
+            return new DocumentDto(d.FileName, d.DataInBase64, tagNames);
+        });
+
+        return documentDtos;
+    }
+
+    private Document ParseDocument(DocumentDto documentDto)
+    {
+        IEnumerable<Tag> tags = documentDto.Tags.Select(t => new Tag(t));
+        Document document = new Document(documentDto.FileName, documentDto.DataInBase64, tags);
+        return document;
     }
 }

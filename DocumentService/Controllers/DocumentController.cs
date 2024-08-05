@@ -1,4 +1,5 @@
-﻿using DocumentUploader.DocumentService.Entities;
+﻿using DocumentService;
+using DocumentUploader.DocumentService.Entities;
 using DocumentUploader.DocumentService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ namespace DocumentUploader.DocumentService.Controllers
         {
             if (!ModelState.IsValid) return StatusCode(400);
 
-            if (!_documentService.IsValid(document)) return StatusCode(400);
+            if (!_documentService.IsDtoValid(document)) return StatusCode(400);
             
             _tagService.CreateMissingTags(document.Tags);
             _documentService.Upload(document);
@@ -43,6 +44,14 @@ namespace DocumentUploader.DocumentService.Controllers
             _tagService.RemoveUnusedTags(documentId);
 
             return StatusCode(200);
+        }
+
+        [HttpGet]
+        public IEnumerable<DocumentDto> GetDocuments([FromQuery] IEnumerable<string> tags)
+        {
+            IEnumerable<DocumentDto> documents = _documentService.GetDocuments(tags);
+
+            return documents;
         }
     }
 }
