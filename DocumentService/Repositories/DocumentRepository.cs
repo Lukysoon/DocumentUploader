@@ -29,4 +29,14 @@ public class DocumentRepository : IDocumentRepository
         bool exists = _context.Documents.Any();
         return exists;
     }
+
+    public IEnumerable<Document> GetDocuments(IEnumerable<string> tagNames)
+    {
+        IEnumerable<Document> documents = 
+            _context.Documents
+            .Where(d => d.Tags
+                .Any(t => tagNames.Contains(t.Name)));
+        
+        return documents;
+    }
 }
