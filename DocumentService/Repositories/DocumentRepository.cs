@@ -64,7 +64,7 @@ public class DocumentRepository : IDocumentRepository
         }
         catch (Exception ex)
         {
-            throw new Exception("Getting document failed", ex);
+            throw new Exception("Getting documents failed", ex);
         }
     }
 }
