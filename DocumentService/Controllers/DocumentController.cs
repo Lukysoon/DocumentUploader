@@ -22,36 +22,55 @@ namespace DocumentUploader.DocumentService.Controllers
         [Route("upload")]
         public IActionResult UploadDocument(DocumentDto document)
         {
-            if (!ModelState.IsValid) return StatusCode(400);
+            try
+            {
+                if (!ModelState.IsValid || !_documentService.IsDtoValid(document)) 
+                    return StatusCode(StatusCodes.Status400BadRequest, "Model state is not valid");
 
-            if (!_documentService.IsDtoValid(document)) return StatusCode(400);
-            
-            _tagService.CreateMissingTags(document.Tags);
-            _documentService.Upload(document);
+                _tagService.CreateMissingTags(document.Tags);
+                _documentService.Upload(document);
 
-            return StatusCode(200);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);                
+            }
         }
 
         [HttpDelete]
         [Route("delete")]
         public IActionResult RemoveDocument(Guid documentId)
         {
-            if (!ModelState.IsValid) return StatusCode(400);
+            try
+            {
+                if (!ModelState.IsValid || !_documentService.Exists(documentId))
+                    return StatusCode(StatusCodes.Status400BadRequest, "Model state is not valid");
 
-            if (!_documentService.Exists(documentId)) return StatusCode(404);
+                _documentService.Remove(documentId);
+                _tagService.RemoveUnusedTags(documentId);
 
-            _documentService.Remove(documentId);
-            _tagService.RemoveUnusedTags(documentId);
-
-            return StatusCode(200);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);   
+            }
         }
 
         [HttpGet]
-        public IEnumerable<DocumentDto> GetDocuments([FromQuery] IEnumerable<string> tags)
+        public IActionResult GetDocuments([FromQuery] IEnumerable<string> tags)
         {
-            IEnumerable<DocumentDto> documents = _documentService.GetDocuments(tags);
+            try
+            {
+                IEnumerable<DocumentDto> documents = _documentService.GetDocuments(tags);
 
-            return documents;
+                return Ok(documents);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);               
+            }
         }
     }
 }

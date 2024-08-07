@@ -16,17 +16,31 @@ public class TagService : ITagService
 
     public void CreateMissingTags(IEnumerable<string> tagNames)
     {
-        List<Tag> tags = _tagRepository.GetTags(tagNames);
-        List<Tag> missingTags = GetMissingTags(tags);
-        CreateTags(missingTags);
+        try
+        {
+            List<Tag> tags = _tagRepository.GetTags(tagNames);
+            List<Tag> missingTags = GetMissingTags(tags);
+            CreateTags(missingTags);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error in creating missing tags", ex);
+        }
     }
 
     public void RemoveUnusedTags(Guid documentId)
     {
-        List<Tag> tags = _tagRepository.GetTagsForDocument(documentId);
-        List<Tag> unusedTags = tags.Where(t => !t.Documents.Any()).ToList();
+        try
+        {
+            List<Tag> tags = _tagRepository.GetTagsForDocument(documentId);
+            List<Tag> unusedTags = tags.Where(t => !t.Documents.Any()).ToList();
 
-        _tagRepository.RemoveTags(unusedTags);
+            _tagRepository.RemoveTags(unusedTags);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error in removing unused tags", ex);
+        }
     }
 
     private void CreateTags(IEnumerable<Tag> tags)

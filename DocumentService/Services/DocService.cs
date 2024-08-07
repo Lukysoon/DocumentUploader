@@ -17,25 +17,53 @@ public class DocService : IDocService
 
     public bool Exists(Guid documentId)
     {
-        bool documentExists = _documentRepository.Exists(documentId);
-        return documentExists;
+        try
+        {
+            bool documentExists = _documentRepository.Exists(documentId);
+            return documentExists;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error in determining whether document exists", ex);
+        }
     }
 
     public void Remove(Guid documentId)
     {
-        _documentRepository.Remove(documentId);
+        try
+        {
+            _documentRepository.Remove(documentId);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error in removing document", ex);
+        }
     }
 
     public void Upload(DocumentDto documentDto)
     {
-        Document document = ParseDocument(documentDto);
-        _documentRepository.UploadDocument(document);
+        try
+        {
+            Document document = ParseDocument(documentDto);
+            _documentRepository.UploadDocument(document);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error in uploading document", ex);
+        }
     }
 
     public bool IsDtoValid(DocumentDto document)
     {
-        bool isValid = !IsBase64String(document.DataInBase64);
-        return isValid;
+        try
+        {
+            bool isValid = !IsBase64String(document.DataInBase64);
+            return isValid;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error in validating document", ex);
+        }
     }
 
     private bool IsBase64String(string base64)
@@ -46,10 +74,17 @@ public class DocService : IDocService
 
     public IEnumerable<DocumentDto> GetDocuments(IEnumerable<string> tags)
     {
-        IEnumerable<Document> documents = _documentRepository.GetDocuments(tags);
-        IEnumerable<DocumentDto> documentDtos = ParseDocuments(documents);
+        try
+        {
+            IEnumerable<Document> documents = _documentRepository.GetDocuments(tags);
+            IEnumerable<DocumentDto> documentDtos = ParseDocuments(documents);
 
-        return documentDtos;
+            return documentDtos;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error in getting documents", ex);
+        }
     }
 
     private IEnumerable<DocumentDto> ParseDocuments(IEnumerable<Document> documents)

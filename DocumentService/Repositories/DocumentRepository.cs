@@ -14,29 +14,57 @@ public class DocumentRepository : IDocumentRepository
 
     public void Remove(Guid documentId)
     {
-        Document? document = _context.Documents.FirstOrDefault(d => d.Id == documentId);
-        if (document != null)
-            _context.Documents.Remove(document);
+        try
+        {
+            Document? document = _context.Documents.FirstOrDefault(d => d.Id == documentId);
+            if (document != null)
+                _context.Documents.Remove(document);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Remove document failed", ex);
+        }
     }
 
     public void UploadDocument(Document document)
     {
-        _context.Documents.Add(document);
+        try
+        {
+            _context.Documents.Add(document);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Uploading document failed", ex);
+        }
     }
 
     public bool Exists(Guid documentId)
     {
-        bool exists = _context.Documents.Any();
-        return exists;
+        try
+        {
+            bool exists = _context.Documents.Any();
+            return exists;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Does file exists? failed", ex);
+        }
     }
 
     public IEnumerable<Document> GetDocuments(IEnumerable<string> tagNames)
     {
-        IEnumerable<Document> documents = 
-            _context.Documents
-            .Where(d => d.Tags
-                .Any(t => tagNames.Contains(t.Name)));
-        
-        return documents;
+        try
+        {
+            IEnumerable<Document> documents = 
+                _context.Documents
+                .Where(d => d.Tags
+                    .Any(t => tagNames.Contains(t.Name)));
+            
+            return documents;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Getting document failed", ex);
+        }
     }
 }
