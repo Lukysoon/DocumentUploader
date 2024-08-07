@@ -9,6 +9,7 @@ public class DocService : IDocService
 {
     private readonly ApplicationDbContext _context;
     private readonly IDocumentRepository _documentRepository;
+    private readonly ITagRepository _tagRepository;
     public DocService(ApplicationDbContext context, IDocumentRepository documentRepository)
     {
         _context = context;    
@@ -100,9 +101,15 @@ public class DocService : IDocService
 
     private Document ParseDocument(DocumentDto documentDto)
     {
-        List<Tag> tags = documentDto.Tags.Select(t => new Tag(t)).ToList();
-        Document document = new Document(documentDto.FileName, documentDto.DataInBase64);
-        document.Tags = tags;
+        List<Tag> existingTags = _tagRepository.GetTagsIfExists(documentDto.Tags);
+
+        List<string> newTagsNames = documentDto.Tags.Where(t => existingTags.Select(t => t.Name).Contains(t)).ToList();
+        List<Tag> newTags = newTagsNames.Select(tn => new Tag(tn)).ToList(); 
+
+        Document document = new Document(documentDto.FileName, documentDto.DataInBase64)
+        {
+            Tags = existingTags.Concat(newTags).ToList()
+        };
 
         return document;
     }
