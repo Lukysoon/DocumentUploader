@@ -73,12 +73,12 @@ public class DocService : IDocService
         return Convert.TryFromBase64String(base64, buffer , out int bytesParsed);
     }
 
-    public IEnumerable<DocumentDto> GetDocuments(IEnumerable<string> tags)
+    public List<DocumentDto> GetDocuments(IEnumerable<string> tags)
     {
         try
         {
-            IEnumerable<Document> documents = _documentRepository.GetDocuments(tags);
-            IEnumerable<DocumentDto> documentDtos = ParseDocuments(documents);
+            List<Document> documents = _documentRepository.GetDocuments(tags);
+            List<DocumentDto> documentDtos = ParseDocuments(documents);
 
             return documentDtos;
         }
@@ -88,13 +88,13 @@ public class DocService : IDocService
         }
     }
 
-    private IEnumerable<DocumentDto> ParseDocuments(IEnumerable<Document> documents)
+    private List<DocumentDto> ParseDocuments(IEnumerable<Document> documents)
     {
-        IEnumerable<DocumentDto> documentDtos = documents.ToList().Select(d => 
+        List<DocumentDto> documentDtos = documents.Select(d => 
         {
             IEnumerable<string> tagNames = d.Tags.Select(t => t.Name);
             return new DocumentDto(d.FileName, d.DataInBase64, tagNames.ToList());
-        });
+        }).ToList();
 
         return documentDtos;
     }

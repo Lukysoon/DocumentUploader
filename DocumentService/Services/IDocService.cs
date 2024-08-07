@@ -9,5 +9,5 @@ public interface IDocService
     void Remove(Guid documentId);
     void Upload(DocumentDto document);
     bool IsDtoValid(DocumentDto document);
-    IEnumerable<DocumentDto> GetDocuments(IEnumerable<string> tags);
+    List<DocumentDto> GetDocuments(IEnumerable<string> tags);
 }

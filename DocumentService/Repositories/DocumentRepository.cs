@@ -53,14 +53,15 @@ public class DocumentRepository : IDocumentRepository
         }
     }
 
-    public IEnumerable<Document> GetDocuments(IEnumerable<string> tagNames)
+    public List<Document> GetDocuments(IEnumerable<string> tagNames)
     {
         try
         {
-            IEnumerable<Document> documents = 
+            List<Document> documents = 
                 _context.Documents
                 .Where(d => d.Tags
-                    .Any(t => tagNames.Contains(t.Name)));
+                    .Any(t => tagNames.Contains(t.Name)))
+                    .ToList();
             
             return documents;
         }

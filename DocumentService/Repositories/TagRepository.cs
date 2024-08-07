@@ -31,7 +31,7 @@ public class TagRepository : ITagRepository
         return document.Tags;
     }
 
-    public void RemoveTags(List<Tag> unusedTags)
+    public void RemoveTags(IEnumerable<Tag> unusedTags)
     {
         _context.Tags.RemoveRange(unusedTags);
     }
