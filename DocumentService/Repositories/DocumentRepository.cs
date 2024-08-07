@@ -19,6 +19,7 @@ public class DocumentRepository : IDocumentRepository
             Document? document = _context.Documents.FirstOrDefault(d => d.Id == documentId);
             if (document != null)
                 _context.Documents.Remove(document);
+                _context.SaveChanges();
         }
         catch (Exception ex)
         {
@@ -31,6 +32,7 @@ public class DocumentRepository : IDocumentRepository
         try
         {
             _context.Documents.Add(document);
+            _context.SaveChanges();
         }
         catch (Exception ex)
         {

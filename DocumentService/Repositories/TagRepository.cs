@@ -16,6 +16,7 @@ public class TagRepository : ITagRepository
     public void CreateTags(IEnumerable<Tag> tags)
     {
         _context.Tags.AddRange(tags);
+        _context.SaveChanges();
     }
 
     public List<Tag> GetTagsForDocument(Guid documentId)
