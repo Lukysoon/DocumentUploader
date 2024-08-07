@@ -14,20 +14,6 @@ public class TagService : ITagService
         _tagRepository = tagRepository;
     }
 
-    public void CreateMissingTags(IEnumerable<string> tagNames)
-    {
-        try
-        {
-            List<Tag> tags = _tagRepository.GetTags(tagNames);
-            List<Tag> missingTags = GetMissingTags(tags);
-            CreateTags(missingTags);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("Error in creating missing tags", ex);
-        }
-    }
-
     public void RemoveUnusedTags(Guid documentId)
     {
         try

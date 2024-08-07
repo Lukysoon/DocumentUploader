@@ -41,4 +41,11 @@ public class TagRepository : ITagRepository
         List<Tag> tags = _context.Tags.Where(t => tagNames.Contains(t.Name)).ToList();
         return tags;
     }
+
+    public List<Tag> GetTagsIfExists(IEnumerable<string> tagNames)
+    {
+        List<Tag> tags = _context.Tags.Where(t => tagNames.Contains(t.Name)).ToList();
+
+        return tags;
+    }
 }

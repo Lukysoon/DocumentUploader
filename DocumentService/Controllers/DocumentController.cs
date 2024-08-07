@@ -27,7 +27,6 @@ namespace DocumentUploader.DocumentService.Controllers
                 if (!ModelState.IsValid || !_documentService.IsDtoValid(document)) 
                     return StatusCode(StatusCodes.Status400BadRequest, "Model state is not valid");
 
-                _tagService.CreateMissingTags(document.Tags);
                 _documentService.Upload(document);
 
                 return Ok();

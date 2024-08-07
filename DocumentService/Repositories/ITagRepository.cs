@@ -9,5 +9,5 @@ public interface ITagRepository
     List<Tag> GetTagsForDocument(Guid documentId);
     void RemoveTags(IEnumerable<Tag> unusedTags);
     List<Tag> GetTags(IEnumerable<string> tagNames);
-    List<Tag> GetTagsIfExists(IEnumerable<string> tags);
+    List<Tag> GetTagsIfExists(IEnumerable<string> tagNames);
 }
