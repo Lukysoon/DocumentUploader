@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DocumentUploader.DocumentService.Controllers 
 {
     [ApiController]
-    [Route("document")]
+    [Route("api/document")]
     public class DocumentController : Controller
     {
         private readonly ITagService _tagService;
