@@ -9,7 +9,7 @@ public class DocService : IDocService
 {
     private readonly ApplicationDbContext _context;
     private readonly IDocumentRepository _documentRepository;
-    public DocService(ApplicationDbContext context, DocumentRepository documentRepository)
+    public DocService(ApplicationDbContext context, IDocumentRepository documentRepository)
     {
         _context = context;    
         _documentRepository = documentRepository;
@@ -57,7 +57,7 @@ public class DocService : IDocService
     {
         try
         {
-            bool isValid = !IsBase64String(document.DataInBase64);
+            bool isValid = IsBase64String(document.DataInBase64);
             return isValid;
         }
         catch (Exception ex)
