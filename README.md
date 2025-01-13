@@ -16,7 +16,7 @@ Before running this project, make sure you have the following installed:
 1. Add appsettings.json to the project:
 ```
 "ConnectionStrings": {
-  "DocumentContext": "Server=localhost\\sqlexpress;Database=DocumentService;TrustServerCertificate=True;Trusted_Connection=True"
+  "DocumentContext": "{connectionString}"
 }
 ```
 
