@@ -1,5 +1,6 @@
 ﻿using DocumentUploader.DocumentService.Data;
 using DocumentUploader.DocumentService.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DocumentUploader.DocumentService.Repositories;
 
@@ -57,6 +58,15 @@ public class DocumentRepository : IDocumentRepository
     {
         try
         {
+            if (tagNames.Count() == 0)
+            {
+                var document = _context.Documents.Include(d => d.Tags).Where(d => d.Tags.Count == 0);
+                if (document != null)
+                    return document.ToList();
+                else
+                    return new List<Document>();
+            }
+
             List<Document> documents = 
                 _context.Documents
                 .Where(d => d.Tags
