@@ -13,28 +13,34 @@ Before running this project, make sure you have the following installed:
 ## Setup Instructions
 
 ### Backend (.NET)
+1. Add appsettings.json to the project:
+```
+"ConnectionStrings": {
+  "DocumentContext": "Server=localhost\\sqlexpress;Database=DocumentService;TrustServerCertificate=True;Trusted_Connection=True"
+}
+```
 
-1. Navigate to the backend directory:
+2. Navigate to the backend directory:
 ```bash
 cd DocumentService
 ```
 
-2. Install Entity Framework CLI tools (if not already installed):
+3. Install Entity Framework CLI tools (if not already installed):
 ```bash
 dotnet tool install --global dotnet-ef
 ```
 
-3. Restore dependencies:
+4. Restore dependencies:
 ```bash
 dotnet restore
 ```
 
-4. Update database with migrations:
+5. Update database with migrations:
 ```bash
 dotnet ef database update
 ```
 
-5. Run the backend server:
+6. Run the backend server:
 ```bash
 dotnet run
 ```
