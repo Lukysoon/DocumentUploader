@@ -1,4 +1,4 @@
-﻿using DocumentService;
+﻿﻿using DocumentService;
 using DocumentUploader.DocumentService.Data;
 using DocumentUploader.DocumentService.Entities;
 using DocumentUploader.DocumentService.Repositories;
@@ -10,22 +10,22 @@ public class DocService : IDocService
     private readonly ApplicationDbContext _context;
     private readonly IDocumentRepository _documentRepository;
     private readonly ITagRepository _tagRepository;
-    public DocService(ApplicationDbContext context, IDocumentRepository documentRepository)
+    public DocService(ApplicationDbContext context, IDocumentRepository documentRepository, ITagRepository tagRepository)
     {
         _context = context;    
         _documentRepository = documentRepository;
+        _tagRepository = tagRepository;
     }
 
     public bool Exists(Guid documentId)
     {
         try
         {
-            bool documentExists = _documentRepository.Exists(documentId);
-            return documentExists;
+            return _documentRepository.Exists(documentId);
         }
         catch (Exception ex)
         {
-            throw new Exception("Error in determining whether document exists", ex);
+            throw new Exception("Error checking document existence.", ex);
         }
     }
 
@@ -33,11 +33,16 @@ public class DocService : IDocService
     {
         try
         {
+            if (!_documentRepository.Exists(documentId))
+            {
+                throw new Exception("File with id " + documentId.ToString() + " not found.");
+            }
+
             _documentRepository.Remove(documentId);
         }
         catch (Exception ex)
         {
-            throw new Exception("Error in removing document", ex);
+            throw new Exception("Error removing document.", ex);
         }
     }
 
@@ -50,67 +55,74 @@ public class DocService : IDocService
         }
         catch (Exception ex)
         {
-            throw new Exception("Error in uploading document", ex);
+            throw new ArgumentException("Document object is not valid.", ex);
         }
-    }
-
-    public bool IsDtoValid(DocumentDto document)
-    {
-        try
-        {
-            bool isValid = IsBase64String(document.DataInBase64);
-            return isValid;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("Error in validating document", ex);
-        }
-    }
-
-    private bool IsBase64String(string base64)
-    {
-        Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
-        return Convert.TryFromBase64String(base64, buffer , out int bytesParsed);
     }
 
     public List<DocumentDto> GetDocuments(IEnumerable<string> tags)
     {
+        if (tags == null)
+        {
+            throw new ArgumentNullException(nameof(tags));
+        }
+
         try
         {
             List<Document> documents = _documentRepository.GetDocuments(tags);
-            List<DocumentDto> documentDtos = ParseDocuments(documents);
-
-            return documentDtos;
+            return ParseDocuments(documents);
         }
         catch (Exception ex)
         {
-            throw new Exception("Error in getting documents", ex);
+            throw new Exception("Error retrieving documents.", ex);
         }
     }
 
     private List<DocumentDto> ParseDocuments(IEnumerable<Document> documents)
     {
-        List<DocumentDto> documentDtos = documents.Select(d => 
+        try
         {
-            IEnumerable<string> tagNames = d.Tags.Select(t => t.Name);
-            return new DocumentDto(d.FileName, d.DataInBase64, tagNames.ToList());
-        }).ToList();
-
-        return documentDtos;
+            return documents.Select(d =>
+            {
+                IEnumerable<string> tagNames = d.Tags?.Select(t => t.Name) ?? Enumerable.Empty<string>();
+                return new DocumentDto(d.FileName, d.DataInBase64, tagNames.ToList());
+            }).ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error parsing documents to DTOs.", ex);
+        }
     }
 
     private Document ParseDocument(DocumentDto documentDto)
     {
-        List<Tag> existingTags = _tagRepository.GetTagsIfExists(documentDto.Tags);
-
-        List<string> newTagsNames = documentDto.Tags.Where(t => existingTags.Select(t => t.Name).Contains(t)).ToList();
-        List<Tag> newTags = newTagsNames.Select(tn => new Tag(tn)).ToList(); 
-
-        Document document = new Document(documentDto.FileName, documentDto.DataInBase64)
+        try
         {
-            Tags = existingTags.Concat(newTags).ToList()
-        };
+            if (_tagRepository == null)
+            {
+                throw new InvalidOperationException("Tag repository is not initialized.");
+            }
 
-        return document;
+            List<Tag> existingTags = _tagRepository.GetTagsIfExists(documentDto.Tags ?? new List<string>());
+            
+            var newTagsNames = documentDto.Tags?
+                .Where(t => !existingTags
+                    .Select(et => et.Name)
+                    .Contains(t))
+                .ToList() ?? new List<string>();
+
+            var newTags = newTagsNames
+                .Where(t => t != string.Empty)
+                .Select(t => new Tag(t))
+                .ToList();
+
+            return new Document(documentDto.FileName, documentDto.DataInBase64)
+            {
+                Tags = existingTags.Concat(newTags).ToList()
+            };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error parsing document data.", ex);
+        }
     }
 }
