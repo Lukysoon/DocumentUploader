@@ -21,14 +21,14 @@ public class TagRepository : ITagRepository
 
     public List<Tag> GetTagsForDocument(Guid documentId)
     {
-       Document? document = 
-        _context.Documents
-        .Include(d => d.Tags)
-        .FirstOrDefault(d => d.Id == documentId);
-
-        if (document == null) throw new Exception();
-
-        return document.Tags;
+       Document? document = _context.Documents
+            .Include(d => d.Tags)
+            .FirstOrDefault(d => d.Id == documentId);
+        
+        if (document == null)
+            return new List<Tag>();
+        else
+            return document.Tags;
     }
 
     public void RemoveTags(IEnumerable<Tag> unusedTags)
@@ -45,7 +45,6 @@ public class TagRepository : ITagRepository
     public List<Tag> GetTagsIfExists(IEnumerable<string> tagNames)
     {
         List<Tag> tags = _context.Tags.Where(t => tagNames.Contains(t.Name)).ToList();
-
         return tags;
     }
 }

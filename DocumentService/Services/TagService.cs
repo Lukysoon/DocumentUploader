@@ -28,17 +28,4 @@ public class TagService : ITagService
             throw new Exception("Error in removing unused tags", ex);
         }
     }
-
-    private void CreateTags(IEnumerable<Tag> tags)
-    {
-        _tagRepository.CreateTags(tags);
-    }
-
-    private List<Tag> GetMissingTags(IEnumerable<Tag> tags)
-    {
-        HashSet<Tag> existingTags = _context.Tags.Where(t => tags.Contains(t)).Select(t => t).ToHashSet();
-        List<Tag> missingTags = tags.Where(t => !existingTags.Contains(t)).ToList();
-
-        return missingTags;
-    }
 }
