@@ -1,22 +1,11 @@
 {
 	"info": {
-		"_postman_id": "b5e40d2a-8f9c-4e1d-9b3e-9f9f9f9f9f9f",
+		"_postman_id": "5fa30417-3c61-44a5-ad2b-ab46b397f30b",
 		"name": "Document Uploader API Tests",
 		"description": "Integration tests for Document Uploader API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19334703"
 	},
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:5000",
-			"type": "string"
-		},
-		{
-			"key": "documentId",
-			"value": "",
-			"type": "string"
-		}
-	],
 	"item": [
 		{
 			"name": "Upload Document",
@@ -50,10 +39,17 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/document/upload",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document", "upload"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document",
+								"upload"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Upload Document - Invalid Base64",
@@ -84,10 +80,17 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/document/upload",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document", "upload"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document",
+								"upload"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Upload Document - No Tags",
@@ -118,10 +121,17 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/document/upload",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document", "upload"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document",
+								"upload"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Upload Document - Filename Too Long",
@@ -152,10 +162,17 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/document/upload",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document", "upload"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document",
+								"upload"
+							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -192,10 +209,16 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/api/document",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get Documents By Tags",
@@ -222,8 +245,13 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/api/document?tags=test&tags=integration",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document"],
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document"
+							],
 							"query": [
 								{
 									"key": "tags",
@@ -235,7 +263,8 @@
 								}
 							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -262,8 +291,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/api/document/delete?documentId={{documentId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document", "delete"],
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document",
+								"delete"
+							],
 							"query": [
 								{
 									"key": "documentId",
@@ -271,7 +306,8 @@
 								}
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Delete Document - Invalid ID",
@@ -293,8 +329,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/api/document/delete?documentId=00000000-0000-0000-0000-000000000000",
-							"host": ["{{baseUrl}}"],
-							"path": ["api", "document", "delete"],
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"document",
+								"delete"
+							],
 							"query": [
 								{
 									"key": "documentId",
@@ -302,9 +344,44 @@
 								}
 							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5229",
+			"type": "string"
+		},
+		{
+			"key": "documentId",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
