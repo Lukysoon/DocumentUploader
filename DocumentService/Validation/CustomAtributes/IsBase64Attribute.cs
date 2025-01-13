@@ -5,8 +5,7 @@ namespace DocumentService.Validation;
 
 public class IsBase64Attribute : ValidationAttribute
 {
-    protected override ValidationResult? IsValid(
-        object? value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var data = validationContext.ObjectInstance;
         if (!IsBase64String((string)data))

@@ -1,4 +1,5 @@
 ﻿using DocumentService;
+using DocumentService.Validation.CustomAtributes;
 using DocumentUploader.DocumentService.Entities;
 using DocumentUploader.DocumentService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,6 @@ namespace DocumentUploader.DocumentService.Controllers
         {
             try
             {
-                if (!ModelState.IsValid || !_documentService.IsDtoValid(document)) 
-                    return StatusCode(StatusCodes.Status400BadRequest, "Model state is not valid");
-
                 _documentService.Upload(document);
 
                 return Ok();
@@ -39,13 +37,10 @@ namespace DocumentUploader.DocumentService.Controllers
 
         [HttpDelete]
         [Route("delete")]
-        public IActionResult RemoveDocument(Guid documentId)
+        public IActionResult RemoveDocument([DocumentExists] Guid documentId)
         {
             try
             {
-                if (!ModelState.IsValid || !_documentService.Exists(documentId))
-                    return StatusCode(StatusCodes.Status400BadRequest, "Model state is not valid");
-
                 _documentService.Remove(documentId);
                 _tagService.RemoveUnusedTags(documentId);
 
