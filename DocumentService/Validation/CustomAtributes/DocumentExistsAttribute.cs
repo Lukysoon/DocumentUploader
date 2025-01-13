@@ -14,7 +14,7 @@ public class DocumentExistsAttribute : ValidationAttribute
 
         if (!dbContext.Documents.Any(d => d.Id == documentId))
         {
-            return new ValidationResult("Document does not exist.");
+            return new ValidationResult($"Document '{documentId}' does not exist.");
         }
 
         return ValidationResult.Success;

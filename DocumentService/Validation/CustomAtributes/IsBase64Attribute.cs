@@ -7,8 +7,8 @@ public class IsBase64Attribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        var data = validationContext.ObjectInstance;
-        if (!IsBase64String((string)data))
+        DocumentDto documentDto = (DocumentDto)validationContext.ObjectInstance;
+        if (!IsBase64String((string)documentDto.DataInBase64))
         {
             return new ValidationResult($"Property {validationContext.DisplayName} must be in base64.");
         }
