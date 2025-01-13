@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "b5e40d2a-8f9c-4e1d-9b3e-9f9f9f9f9f9f",
+		"name": "Document Uploader API Tests",
+		"description": "Integration tests for Document Uploader API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "documentId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Upload Document",
+			"item": [
+				{
+					"name": "Upload Document - Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fileName\": \"test-document.txt\",\n    \"dataInBase64\": \"SGVsbG8gV29ybGQ=\",\n    \"tags\": [\"test\", \"integration\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/document/upload",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document", "upload"]
+						}
+					}
+				},
+				{
+					"name": "Upload Document - Invalid Base64",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fileName\": \"test-document.txt\",\n    \"dataInBase64\": \"invalid-base64!\",\n    \"tags\": [\"test\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/document/upload",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document", "upload"]
+						}
+					}
+				},
+				{
+					"name": "Upload Document - No Tags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fileName\": \"test-document.txt\",\n    \"dataInBase64\": \"SGVsbG8gV29ybGQ=\",\n    \"tags\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/document/upload",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document", "upload"]
+						}
+					}
+				},
+				{
+					"name": "Upload Document - Filename Too Long",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fileName\": \"this-is-a-very-long-filename-that-exceeds-the-maximum-length-of-fifty-characters.txt\",\n    \"dataInBase64\": \"SGVsbG8gV29ybGQ=\",\n    \"tags\": [\"test\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/document/upload",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document", "upload"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Get Documents",
+			"item": [
+				{
+					"name": "Get All Documents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+									"});",
+									"",
+									"if (pm.response.json().length > 0) {",
+									"    var firstDocument = pm.response.json()[0];",
+									"    pm.globals.set(\"documentId\", firstDocument.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/document",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document"]
+						}
+					}
+				},
+				{
+					"name": "Get Documents By Tags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/document?tags=test&tags=integration",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document"],
+							"query": [
+								{
+									"key": "tags",
+									"value": "test"
+								},
+								{
+									"key": "tags",
+									"value": "integration"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Delete Document",
+			"item": [
+				{
+					"name": "Delete Document - Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/document/delete?documentId={{documentId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document", "delete"],
+							"query": [
+								{
+									"key": "documentId",
+									"value": "{{documentId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Document - Invalid ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/document/delete?documentId=00000000-0000-0000-0000-000000000000",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "document", "delete"],
+							"query": [
+								{
+									"key": "documentId",
+									"value": "00000000-0000-0000-0000-000000000000"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
