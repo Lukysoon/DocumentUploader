@@ -1,55 +1,26 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { DocumentUpload } from './components/DocumentUpload';
+import { DocumentList } from './components/DocumentList';
+import './App.css';
 
-const App = () => {
-  const [file, setFile] = useState(null);
-  const [tags, setTags] = useState("")
+function App() {
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[1])
-  }
-
-  const handleTagChange = (e) => {
-    setTags(e.target.value);
-  }
-
-  const onSubmit = (e) => {
-    e.target.preventDefault();
-    
-  } 
+  const handleUploadComplete = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label htmlFor="file-upload">Choose File</Label>
-          <Input id="file-upload" type="file" onChange={handleFileChange} className="mt-1" />
-        </div>
-        <div>
-          <Label htmlFor="tags">Tags (comma-separated)</Label>
-          <Input
-            id="tags"
-            type="text"
-            value={tags}
-            onChange={handleTagChange}
-            placeholder="tag1, tag2, tag3"
-            className="mt-1"
-          />
-        </div>
-        <Button type="submit" onSubmit={onSubmit} className="w-full">Upload</Button>
-      </form>
-      {/* {message && (
-        <Alert className="mt-4">
-          <AlertTitle>Status</AlertTitle>
-          <AlertDescription>{message}</AlertDescription>
-        </Alert>
-      )} */}
+    <div className="App">
+      <header className="App-header">
+        <h1>Document Uploader</h1>
+      </header>
+      <main>
+        <DocumentUpload onUploadComplete={handleUploadComplete} />
+        <DocumentList refreshTrigger={refreshTrigger} />
+      </main>
     </div>
   );
 }
-
 
 export default App;
