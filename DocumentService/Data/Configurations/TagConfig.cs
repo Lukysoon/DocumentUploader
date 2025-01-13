@@ -8,8 +8,7 @@ namespace DocumentService
     {
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
-            builder.Property(t => t.Id).HasDefaultValueSql("NEWID()").IsRequired();
-            builder.Property(t => t.Name);
+            builder.Property(t => t.Name).IsRequired();
         }
     }
 }
